@@ -48,6 +48,29 @@ class ColorMemoryApp {
   }
 
   private render() {
+    if (!this.session) {
+      this.root.innerHTML = `
+        <main class="grid min-h-screen place-items-center overflow-hidden bg-[radial-gradient(circle_at_top_left,#bae6fd_0,#fff7ed_35%,#ffe4e6_70%,#fef3c7_100%)] px-4 py-8 text-slate-800 sm:px-6 lg:px-8">
+          <section class="grid w-full max-w-5xl gap-6 lg:grid-cols-[1fr_24rem] lg:items-center">
+            <div class="rounded-[2.5rem] border border-white/70 bg-white/65 p-7 shadow-2xl shadow-orange-100/70 backdrop-blur-xl sm:p-10">
+              <p class="text-sm font-extrabold uppercase tracking-[0.32em] text-orange-500">Simon-Says remix</p>
+              <h1 class="mt-3 text-5xl font-black tracking-tight text-slate-900 sm:text-7xl">Color Memory</h1>
+              <p class="mt-5 max-w-2xl text-xl font-semibold leading-relaxed text-slate-600">Sign in first, then test your memory with glowing pastel pads and musical WebAudio cues.</p>
+              <div class="mt-8 grid grid-cols-2 gap-3" aria-hidden="true">
+                <div class="aspect-square rounded-[2rem] bg-gradient-to-br from-sky-200 to-blue-300 shadow-xl shadow-sky-200/60"></div>
+                <div class="aspect-square rounded-[2rem] bg-gradient-to-br from-emerald-200 to-green-300 shadow-xl shadow-emerald-200/60"></div>
+                <div class="aspect-square rounded-[2rem] bg-gradient-to-br from-rose-200 to-red-300 shadow-xl shadow-rose-200/60"></div>
+                <div class="aspect-square rounded-[2rem] bg-gradient-to-br from-amber-100 to-yellow-300 shadow-xl shadow-yellow-200/60"></div>
+              </div>
+            </div>
+            <div data-auth-slot></div>
+          </section>
+        </main>
+      `;
+      this.renderAuth();
+      return;
+    }
+
     this.root.innerHTML = `
       <main class="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,#bae6fd_0,#fff7ed_35%,#ffe4e6_70%,#fef3c7_100%)] px-4 py-6 text-slate-800 sm:px-6 lg:px-8">
         <div class="mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl flex-col gap-6">
@@ -87,7 +110,7 @@ class ColorMemoryApp {
 
     const start = this.root.querySelector<HTMLButtonElement>('[data-start]');
     if (start) {
-      start.disabled = !this.session || this.mode === 'watching' || this.mode === 'saving';
+      start.disabled = this.mode === 'watching' || this.mode === 'saving';
       start.addEventListener('click', () => void this.startGame());
     }
   }
